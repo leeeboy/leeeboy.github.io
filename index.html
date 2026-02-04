@@ -3,289 +3,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leela Lochan | Data Systems Architect</title>
+    <title>Leela Lochan Madisetti | Data Systems Architect</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    
+
     <style>
         :root {
-            --bg-deep: #0a0c10;
-            --bg-panel: rgba(17, 25, 40, 0.75);
+            --bg-deep: #05070a;
+            --glass: rgba(13, 17, 23, 0.85);
             --accent-blue: #00d4ff;
             --accent-red: #ff3e3e;
-            --text-main: #e2e8f0;
-            --text-dim: #94a3b8;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
             --border: #1e293b;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             background-color: var(--bg-deep); 
-            color: var(--text-main); 
+            color: var(--text-primary); 
             font-family: 'Inter', sans-serif; 
             line-height: 1.6;
             overflow-x: hidden;
         }
 
-        /* 3D Canvas Layer */
-        #canvas-bg {
+        /* 3D Background */
+        #canvas-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            opacity: 0.5;
+            opacity: 0.6;
         }
 
-        /* HUD Frame */
-        .hud-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 100;
-            border: 1px solid rgba(0, 212, 255, 0.1);
-            background: radial-gradient(circle at center, transparent 60%, rgba(0,0,0,0.4) 100%);
-        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 2rem; position: relative; z-index: 2; }
 
-        .container { max-width: 1000px; margin: 0 auto; padding: 2rem; position: relative; z-index: 2; }
-
-        /* Header Section */
-        header { 
-            padding: 10vh 0 4rem 0; 
-            text-align: center; 
-        }
+        /* Header Navigation */
+        header { padding: 8vh 0 4rem 0; text-align: center; }
         h1 { 
             font-family: 'Orbitron', sans-serif; 
-            font-size: clamp(2rem, 6vw, 3.5rem); 
-            letter-spacing: 4px; 
+            font-size: clamp(1.8rem, 5vw, 3.5rem); 
+            letter-spacing: 5px; 
             margin-bottom: 1rem;
-            color: #fff;
-            text-shadow: 0 0 15px var(--accent-blue);
+            text-shadow: 0 0 20px var(--accent-blue);
         }
-        .contact-links { margin-top: 1.5rem; }
-        .contact-links a {
+        .nav-links { margin-top: 2rem; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+        .nav-links a {
             color: var(--accent-blue);
             text-decoration: none;
             font-family: 'JetBrains Mono', monospace;
-            margin: 0 1rem;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             border: 1px solid var(--accent-blue);
-            padding: 8px 16px;
-            transition: 0.3s;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
             background: rgba(0, 212, 255, 0.05);
         }
-        .contact-links a:hover { background: var(--accent-blue); color: #000; box-shadow: 0 0 20px var(--accent-blue); }
+        .nav-links a:hover { 
+            background: var(--accent-blue); 
+            color: #000; 
+            box-shadow: 0 0 25px var(--accent-blue);
+            transform: translateY(-3px);
+        }
 
-        /* Section Styling */
-        section { margin-bottom: 5rem; }
+        /* Section Layout */
+        section { margin-bottom: 6rem; }
         h2 { 
             font-family: 'Orbitron', sans-serif; 
             color: var(--accent-blue); 
-            font-size: 1.2rem; 
-            margin-bottom: 2rem; 
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
+            font-size: 1.3rem; 
+            margin-bottom: 2.5rem; 
+            border-left: 4px solid var(--accent-red);
+            padding-left: 15px;
+            text-transform: uppercase;
         }
-        h2::before { content: "> "; margin-right: 10px; color: var(--accent-red); }
 
-        .glass-panel {
-            background: var(--bg-panel);
-            backdrop-filter: blur(12px);
+        .panel {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
             border: 1px solid var(--border);
+            padding: 2.5rem;
             border-radius: 4px;
-            padding: 2rem;
             margin-bottom: 2rem;
-            transition: 0.3s;
+            transition: border-color 0.4s;
         }
-        .glass-panel:hover { border-color: var(--accent-blue); }
+        .panel:hover { border-color: var(--accent-blue); }
 
-        /* Impact Metrics */
-        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem; }
-        .metric-card { text-align: center; border-left: 2px solid var(--accent-red); padding: 10px; background: rgba(255, 62, 62, 0.05); }
-        .metric-value { display: block; font-size: 1.5rem; font-weight: 700; color: var(--accent-red); font-family: 'JetBrains Mono'; }
+        /* Profile/Impact Grid */
+        .impact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+        .impact-card { background: rgba(255, 62, 62, 0.08); padding: 1.5rem; border-top: 2px solid var(--accent-red); text-align: center; }
+        .impact-value { display: block; font-size: 2rem; font-weight: 700; color: var(--accent-red); font-family: 'JetBrains Mono'; }
 
-        /* Work Experience & Projects */
-        .job-title { color: #fff; font-weight: 700; font-size: 1.2rem; }
-        .company { color: var(--accent-blue); font-family: 'JetBrains Mono'; margin-bottom: 1rem; display: block; }
-        .experience-list { list-style: none; }
-        .experience-list li { margin-bottom: 0.75rem; color: var(--text-main); position: relative; padding-left: 1.5rem; }
-        .experience-list li::before { content: "▪"; position: absolute; left: 0; color: var(--accent-blue); }
+        /* Work & Projects */
+        .title-row { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; margin-bottom: 1rem; }
+        .job-title { font-size: 1.25rem; font-weight: 700; color: #fff; }
+        .company { color: var(--accent-blue); font-family: 'JetBrains Mono'; font-weight: 500; }
+        .date { color: var(--text-secondary); font-size: 0.9rem; }
+        
+        ul.details { list-style: none; margin-top: 1rem; }
+        ul.details li { position: relative; padding-left: 1.5rem; margin-bottom: 0.8rem; color: var(--text-primary); }
+        ul.details li::before { content: "»"; position: absolute; left: 0; color: var(--accent-blue); font-weight: bold; }
 
-        /* Skills Chips */
-        .skill-tag {
+        /* Skill Tags */
+        .skill-group { margin-bottom: 1.5rem; }
+        .skill-group label { display: block; color: var(--accent-blue); font-family: 'JetBrains Mono'; font-size: 0.8rem; margin-bottom: 0.5rem; text-transform: uppercase; }
+        .tag {
             display: inline-block;
             background: #1e293b;
-            color: var(--text-main);
-            padding: 5px 12px;
-            border-radius: 3px;
-            font-size: 0.85rem;
+            color: #e2e8f0;
+            padding: 4px 12px;
             margin: 4px;
+            font-size: 0.85rem;
             border: 1px solid var(--border);
             font-family: 'JetBrains Mono';
         }
 
-        footer { text-align: center; padding: 4rem; color: var(--text-dim); font-size: 0.8rem; letter-spacing: 2px; }
+        footer { text-align: center; padding: 4rem 0; color: var(--text-secondary); font-size: 0.8rem; letter-spacing: 2px; }
+
+        @media (max-width: 768px) { .panel { padding: 1.5rem; } }
     </style>
 </head>
 <body>
 
-    <div id="canvas-bg"></div>
-    <div class="hud-overlay"></div>
+    <div id="canvas-container"></div>
 
     <div class="container">
         <header>
-            <h1 id="glitch-name">LEELA LOCHAN MADISETTI</h1>
-            <div class="contact-links">
-                <a href="https://github.com/leeeboy" target="_blank">GITHUB</a>
-                <a href="https://linkedin.com/in/leelalochan" target="_blank">LINKEDIN</a>
-                <a href="mailto:leelalochan@gmail.com">EMAIL_CLIENT</a>
-                <a href="resume.pdf" target="_blank" style="border-color: var(--accent-red); color: var(--accent-red);">DOWNLOAD_CV</a>
+            <h1 id="glitch-title">LEELA LOCHAN MADISETTI</h1>
+            <div class="nav-links">
+                <a href="https://github.com/leeeboy" target="_blank">GITHUB_LINK</a>
+                <a href="https://linkedin.com/in/leelalochan" target="_blank">LINKEDIN_PROF</a>
+                <a href="mailto:leelalochan@gmail.com">SEND_EMAIL</a>
             </div>
         </header>
 
         <section id="profile">
-            <h2>PROFILE_SUMMARY</h2>
-            <div class="glass-panel">
-                <p>
-                    Data Infrastructure Engineer specializing in <strong>Pipeline Observability and Quality Automation</strong>. 
-                    I bridge the gap between Data Engineering and SDET principles to build self-healing, high-integrity data systems. 
-                    Proven track record in reducing operational latency and ensuring 99.9% data reliability for multi-million row datasets.
+            <h2>MISSION_PROFILE</h2>
+            <div class="panel">
+                <p style="font-size: 1.1rem; color: #fff;">
+                    Data Infrastructure Engineer with a specialized focus on <strong>Pipeline Observability</strong> and <strong>Quality Automation</strong>. 
+                    Integrating software engineering rigor into data systems to ensure 99.9% data reliability and system scalability[cite: 7, 9].
                 </p>
-                <div class="metrics-grid">
-                    <div class="metric-card"><span class="metric-value">-40%</span><small>Latency Reduction</small></div>
-                    <div class="metric-card"><span class="metric-value">+30%</span><small>Data Reliability</small></div>
-                    <div class="metric-card"><span class="metric-value">50%</span><small>Op Automation</small></div>
+                <div class="impact-grid">
+                    <div class="impact-card"><span class="impact-value">-40%</span><small>Reporting Latency</small></div>
+                    <div class="impact-card"><span class="impact-value">30%</span><small>Reliability Gain</small></div>
+                    <div class="impact-card"><span class="impact-value">50%</span><small>Ops Automated</small></div>
                 </div>
             </div>
         </section>
 
         <section id="experience">
-            <h2>WORK_EXPERIENCE</h2>
+            <h2>TACTICAL_EXPERIENCE</h2>
             
-            <div class="glass-panel">
-                <span class="job-title">Analyst - Data Integrations</span>
-                <span class="company">HDSupply | Sept 2025 – Present</span>
-                <ul class="experience-list">
-                    <li>Designed automated validation frameworks using <strong>Python</strong> and <strong>SQL</strong> to detect schema drift and null anomalies[cite: 7].</li>
-                    <li>Integrated <strong>Splunk dashboards</strong> to track data freshness and pipeline failure trends[cite: 9].</li>
-                    <li>Optimized materialized views over multi-million-row datasets, enabling near-real-time analytics[cite: 10].</li>
+            <div class="panel">
+                <div class="title-row">
+                    <div>
+                        <div class="job-title">Analyst - Data Integrations</div>
+                        <div class="company">HDSupply</div>
+                    </div>
+                    <div class="date">Sept 2025 – Present</div>
+                </div>
+                <ul class="details">
+                    <li>Designed automated validation frameworks using Python and SQL to detect schema drift and null anomalies[cite: 7].</li>
+                    <li>Integrated Splunk dashboards to monitor pipeline failures and data freshness in real-time[cite: 9].</li>
+                    <li>Optimized materialized views over multi-million-row datasets, reducing reporting latency by 40%[cite: 10].</li>
                 </ul>
             </div>
 
-            <div class="glass-panel">
-                <span class="job-title">Software Development Engineer in Test</span>
-                <span class="company">TCS (British Telecom) | 2021 – 2023</span>
-                <ul class="experience-list">
-                    <li>Automated 150+ regression test cases using Python and PyTest, reducing cycle time by 65%[cite: 15].</li>
-                    <li>Validated <strong>AI-driven NLP workflows</strong> for metadata extraction and classification in AWS S3[cite: 20].</li>
-                    <li>Prevented PII data leaks in AWS RDS pipelines via proactive validation[cite: 24].</li>
+            <div class="panel">
+                <div class="title-row">
+                    <div>
+                        <div class="job-title">Software Development Engineer in Test</div>
+                        <div class="company">TCS (British Telecom)</div>
+                    </div>
+                    <div class="date">Jun 2021 – Jul 2023</div>
+                </div>
+                <ul class="details">
+                    <li>Automated 150+ regression test cases using Python, reducing cycle time by 65%[cite: 15].</li>
+                    <li>Validated AI-driven document processing workflows involving NLP-based extraction and AWS S3 storage[cite: 20].</li>
+                    <li>Prevented PII data persistence in AWS RDS during pipeline validation, ensuring regulatory compliance[cite: 24].</li>
                 </ul>
             </div>
         </section>
 
         <section id="projects">
-            <h2>PROJECT_DOSSIER</h2>
+            <h2>SYSTEMS_DEPLOYED</h2>
             
-            <div class="glass-panel">
-                <h3 style="color: var(--accent-blue);">Insurance ELT & Analytics Pipeline</h3>
-                <p style="margin: 0.5rem 0;">End-to-end ingestion of 5.2K records using <strong>Airbyte</strong>, <strong>Snowflake</strong>, and <strong>dbt</strong>[cite: 37, 38].</p>
-                <div>
-                    <span class="skill-tag">MongoDB</span><span class="skill-tag">Airbyte</span><span class="skill-tag">Snowflake</span><span class="skill-tag">dbt</span>
+            <div class="panel">
+                <h3 style="color: var(--accent-blue); margin-bottom: 1rem;">Insurance ELT & Analytics Pipeline</h3>
+                <p>Processed 5.2K+ customer records using Airbyte, Snowflake, and dbt. Built layered data models to enable fraud trend analysis[cite: 38, 39].</p>
+                <div style="margin-top: 1rem;">
+                    <span class="tag">MongoDB</span><span class="tag">Snowflake</span><span class="tag">dbt</span><span class="tag">Power BI</span>
                 </div>
             </div>
 
-            <div class="glass-panel">
-                <h3 style="color: var(--accent-blue);">E-commerce Medallion Lakehouse</h3>
-                <p style="margin: 0.5rem 0;">Azure Data Factory orchestration across Bronze/Silver/Gold Delta Lake layers[cite: 45, 46].</p>
-                <div>
-                    <span class="skill-tag">Azure</span><span class="skill-tag">PySpark</span><span class="skill-tag">Delta Lake</span><span class="skill-tag">Power BI</span>
+            <div class="panel">
+                <h3 style="color: var(--accent-blue); margin-bottom: 1rem;">Sales Analytics Engine</h3>
+                <p>Ingested ~30K records into Snowflake, applying dbt tests to prevent 95% of bad data loads prior to production[cite: 41, 43].</p>
+                <div style="margin-top: 1rem;">
+                    <span class="tag">Snowflake</span><span class="tag">dbt</span><span class="tag">SQL</span>
                 </div>
             </div>
         </section>
 
         <section id="skills">
-            <h2>CORE_SKILL_SET</h2>
-            <div class="glass-panel">
-                <p style="color: var(--accent-blue); margin-bottom: 0.5rem;">PROGRAMMING & DATA</p>
-                <span class="skill-tag">Python (Pandas, NumPy)</span><span class="skill-tag">SQL</span><span class="skill-tag">PySpark</span><span class="skill-tag">Bash</span>
-                
-                <p style="color: var(--accent-blue); margin: 1.5rem 0 0.5rem 0;">CLOUD & DEVOPS</p>
-                <span class="skill-tag">AWS (Glue, Redshift, S3)</span><span class="skill-tag">Azure (ADF, Databricks)</span><span class="skill-tag">Docker</span><span class="skill-tag">Git</span>
-                
-                <p style="color: var(--accent-blue); margin: 1.5rem 0 0.5rem 0;">PIPELINES & DB</p>
-                <span class="skill-tag">Airflow</span><span class="skill-tag">Kafka</span><span class="skill-tag">Airbyte</span><span class="skill-tag">Snowflake</span><span class="skill-tag">MongoDB</span>
+            <h2>CORE_ARSENAL</h2>
+            <div class="panel">
+                <div class="skill-group">
+                    <label>Programming & Data</label>
+                    <span class="tag">Python (Pandas, NumPy)</span><span class="tag">SQL</span><span class="tag">PySpark</span><span class="tag">Bash</span> [cite: 31]
+                </div>
+                <div class="skill-group">
+                    <label>Engineering & Pipelines</label>
+                    <span class="tag">Airflow</span><span class="tag">Kafka</span><span class="tag">AirByte</span><span class="tag">Data Modeling</span> [cite: 32]
+                </div>
+                <div class="skill-group">
+                    <label>Cloud & Infrastructure</label>
+                    <span class="tag">AWS (S3, Glue, Redshift)</span><span class="tag">Azure (ADF, Databricks)</span><span class="tag">Docker</span> [cite: 33]
+                </div>
             </div>
         </section>
 
         <footer>
-            TERMINAL ACCESS GRANTED // LEELA LOCHAN MADISETTI // MS COMPUTER SCIENCE (IIT)
+            TERMINAL_SECURE_ACCESS_GRANTED // LEELA LOCHAN MADISETTI // MS CS 2025
         </footer>
     </div>
 
     <script>
-        // --- THREE.JS: Tactical Particle Field ---
+        // 3D Scene Setup
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById('canvas-bg').appendChild(renderer.domElement);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        const particlesGeometry = new THREE.BufferGeometry();
-        const count = 3000;
-        const positions = new Float32Array(count * 3);
-        for(let i = 0; i < count * 3; i++) {
-            positions[i] = (Math.random() - 0.5) * 15;
+        // Interactive Grid/Particles
+        const geometry = new THREE.BufferGeometry();
+        const vertices = [];
+        for (let i = 0; i < 4000; i++) {
+            vertices.push((Math.random() - 0.5) * 20, (Math.random() - 0.5) * 20, (Math.random() - 0.5) * 20);
         }
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        const particlesMaterial = new THREE.PointsMaterial({ size: 0.015, color: 0x00d4ff });
-        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-        scene.add(particles);
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+        const material = new THREE.PointsMaterial({ size: 0.02, color: 0x00d4ff });
+        const points = new THREE.Points(geometry, material);
+        scene.add(points);
         camera.position.z = 5;
 
         function animate() {
             requestAnimationFrame(animate);
-            particles.rotation.y += 0.0005;
+            points.rotation.y += 0.0006;
             renderer.render(scene, camera);
         }
         animate();
 
-        // Mouse interaction for 3D field
+        // Mouse Move Interaction
         document.addEventListener('mousemove', (e) => {
             const x = (e.clientX / window.innerWidth - 0.5) * 2;
             const y = (e.clientY / window.innerHeight - 0.5) * 2;
-            gsap.to(particles.rotation, { x: y * 0.2, y: x * 0.2, duration: 2 });
+            gsap.to(points.rotation, { x: y * 0.3, y: x * 0.3, duration: 1.5 });
         });
 
-        // --- GSAP: Section Reveal ---
+        // Scroll Animations
         gsap.registerPlugin(ScrollTrigger);
-        gsap.from(".glass-panel", {
-            scrollTrigger: {
-                trigger: ".glass-panel",
-                start: "top 90%",
-            },
-            y: 50,
+        gsap.from(".panel", {
+            scrollTrigger: { trigger: ".panel", start: "top 85%" },
+            y: 40,
             opacity: 0,
-            duration: 1,
-            stagger: 0.2,
-            ease: "power3.out"
+            duration: 0.8,
+            stagger: 0.2
         });
-
-        // --- Glitch Decryption Effect ---
-        const nameElement = document.getElementById('glitch-name');
-        const finalName = nameElement.innerText;
-        const chars = "01$#!%&@ABCXYZ";
-        
-        function decrypt() {
-            let iteration = 0;
-            const interval = setInterval(() => {
-                nameElement.innerText = nameElement.innerText.split("")
-                    .map((letter, index) => {
-                        if(index < iteration) return finalName[index];
-                        return chars[Math.floor(Math.random() * chars.length)];
-                    }).join("");
-                if(iteration >= finalName.length) clearInterval(interval);
-                iteration += 1/3;
-            }, 30);
-        }
-        window.onload = decrypt;
     </script>
 </body>
 </html>
