@@ -1,6 +1,137 @@
-<html>
-<header><title>This is title</title></header>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leela Lochan Madisetti | Data Engineering Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --text: #e2e8f0;
+            --accent: #38bdf8; /* Data Blue */
+            --secondary: #94a3b8;
+            --card-bg: #1e293b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            font-family: 'Inter', sans-serif; 
+            line-height: 1.6; 
+            padding: 2rem;
+        }
+
+        header { max-width: 900px; margin: 0 auto 4rem auto; }
+        h1 { font-family: 'JetBrains Mono', monospace; font-size: 2.5rem; color: var(--accent); }
+        .subtitle { font-size: 1.1rem; color: var(--secondary); margin-top: 0.5rem; }
+        
+        .nav-links { margin-top: 1.5rem; }
+        .nav-links a { 
+            color: var(--text); text-decoration: none; margin-right: 1.5rem; 
+            font-weight: 700; border-bottom: 2px solid transparent; transition: 0.3s;
+        }
+        .nav-links a:hover { border-bottom: 2px solid var(--accent); color: var(--accent); }
+
+        section { max-width: 900px; margin: 4rem auto; }
+        h2 { font-family: 'JetBrains Mono', monospace; margin-bottom: 2rem; font-size: 1.5rem; border-left: 4px solid var(--accent); padding-left: 1rem; }
+
+        /* Project Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .card { 
+            background: var(--card-bg); border-radius: 8px; padding: 1.5rem; 
+            transition: transform 0.2s; border: 1px solid #334155;
+        }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .card h3 { color: var(--accent); margin-bottom: 0.75rem; }
+        .tag { 
+            display: inline-block; background: #334155; color: var(--accent); 
+            padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem; 
+            margin-right: 0.5rem; margin-bottom: 0.5rem; font-family: 'JetBrains Mono';
+        }
+
+        .metrics { font-weight: bold; color: #10b981; } /* Success Green for metrics */
+
+        footer { text-align: center; color: var(--secondary); margin-top: 6rem; font-size: 0.9rem; }
+        
+        @media (max-width: 600px) {
+            body { padding: 1rem; }
+            h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
 <body>
-Hello world
+
+    <header>
+        <h1>Leela Lochan Madisetti</h1>
+        <p class="subtitle">Data Engineer | Specialty: Pipeline Observability & Quality Automation</p>
+        <div class="nav-links">
+            <a href="https://github.com/leeeboy" target="_blank">GitHub</a>
+            <a href="https://linkedin.com/in/leelalochan" target="_blank">LinkedIn</a>
+            <a href="resume.pdf" target="_blank">Resume (PDF)</a>
+            <a href="mailto:leelalochan@gmail.com">Contact</a>
+        </div>
+    </header>
+
+    <section id="about">
+        <h2>System Engineer's Profile</h2>
+        <p>
+            Focused on building high-integrity data systems. Currently optimizing pipelines at <strong>HDSupply</strong> where I've 
+            reduced reporting latency by <span class="metrics">40%</span>. I bridge the gap between Software Engineering (SDET) and 
+            Data Architecture, ensuring that every pipeline I build is observable, testable, and scalable.
+        </p>
+    </section>
+
+    <section id="projects">
+        <h2>Featured Engineering Architectures</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Insurance ELT Pipeline</h3>
+                <p>End-to-end transformation of 5.2K+ records from MongoDB to Snowflake.</p>
+                <div style="margin: 1rem 0;">
+                    <span class="tag">Airbyte</span> <span class="tag">dbt</span> <span class="tag">Snowflake</span> <span class="tag">Python</span>
+                </div>
+                <p>• Applied <span class="metrics">dbt tests</span> to ensure 95% data quality before production.</p>
+            </div>
+
+            <div class="card">
+                <h3>E-commerce Medallion Lakehouse</h3>
+                <p>Orchestrated daily ingestion using Azure Data Factory into a Bronze/Silver/Gold Delta Lake architecture.</p>
+                <div style="margin: 1rem 0;">
+                    <span class="tag">PySpark</span> <span class="tag">Azure Data Factory</span> <span class="tag">Delta Lake</span>
+                </div>
+                <p>• Enabled dynamic forecasting via Gold-layer dimensional modeling.</p>
+            </div>
+
+            <div class="card">
+                <h3>Pipeline Observability Framework</h3>
+                <p>Designed automated validation frameworks to detect schema drift and null anomalies in real-time.</p>
+                <div style="margin: 1rem 0;">
+                    <span class="tag">Splunk</span> <span class="tag">AWS</span> <span class="tag">SQL</span> <span class="tag">Python</span>
+                </div>
+                <p>• Improved system reliability by <span class="metrics">30%</span> via custom observability dashboards.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <h2>Core Stack</h2>
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+            <div>
+                <h4 style="color: var(--accent); margin-bottom: 0.5rem;">Data / Cloud</h4>
+                <p>Snowflake, dbt, Airbyte, AWS, Azure, MongoDB, Delta Lake</p>
+            </div>
+            <div>
+                <h4 style="color: var(--accent); margin-bottom: 0.5rem;">Languages / Tools</h4>
+                <p>Python, SQL, PySpark, Selenium, Splunk, Power BI</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Leela Lochan Madisetti. Built with precision and JetBrains Mono.</p>
+    </footer>
+
 </body>
 </html>
