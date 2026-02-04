@@ -3,135 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leela Lochan Madisetti | Data Engineering Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <title>Leela Lochan | WayneTech Tactical Data</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
         :root {
-            --bg: #0f172a;
-            --text: #e2e8f0;
-            --accent: #38bdf8; /* Data Blue */
-            --secondary: #94a3b8;
-            --card-bg: #1e293b;
+            --dc-dark: #020406;
+            --bat-blue: #00d4ff;
+            --alert-red: #ff2a2a;
+            --border: #1a2332;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
         body { 
-            background-color: var(--bg); 
-            color: var(--text); 
-            font-family: 'Inter', sans-serif; 
-            line-height: 1.6; 
+            background-color: var(--dc-dark); 
+            color: #fff; 
+            font-family: 'Rajdhani', sans-serif; 
+            overflow-x: hidden;
+        }
+
+        /* 3D Background Canvas */
+        #canvas-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            opacity: 0.4;
+        }
+
+        /* Tactical HUD Overlay */
+        .hud-frame {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            border: 20px solid transparent;
+            border-image: radial-gradient(circle, transparent 70%, rgba(0, 212, 255, 0.1) 100%) 30;
+            pointer-events: none; z-index: 10;
+        }
+
+        header {
+            padding: 5vh 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--bat-blue);
+            background: rgba(2, 4, 6, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .identity { 
+            font-family: 'Orbitron', sans-serif; 
+            font-size: clamp(2rem, 5vw, 4rem); 
+            letter-spacing: 8px; 
+            color: white;
+            text-shadow: 0 0 20px var(--bat-blue);
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; z-index: 2; position: relative; }
+
+        .module {
+            background: rgba(13, 17, 23, 0.8);
+            border: 1px solid var(--border);
             padding: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            transform: skew(-2deg); /* Tactical slant */
+            transition: 0.4s ease;
+        }
+        .module:hover { border-color: var(--bat-blue); box-shadow: 0 0 30px rgba(0, 212, 255, 0.1); }
+
+        h2 { 
+            font-family: 'Orbitron', sans-serif; 
+            color: var(--bat-blue); 
+            font-size: 1.2rem; 
+            margin-bottom: 2rem; 
+            text-transform: uppercase;
         }
 
-        header { max-width: 900px; margin: 0 auto 4rem auto; }
-        h1 { font-family: 'JetBrains Mono', monospace; font-size: 2.5rem; color: var(--accent); }
-        .subtitle { font-size: 1.1rem; color: var(--secondary); margin-top: 0.5rem; }
-        
-        .nav-links { margin-top: 1.5rem; }
-        .nav-links a { 
-            color: var(--text); text-decoration: none; margin-right: 1.5rem; 
-            font-weight: 700; border-bottom: 2px solid transparent; transition: 0.3s;
-        }
-        .nav-links a:hover { border-bottom: 2px solid var(--accent); color: var(--accent); }
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
 
-        section { max-width: 900px; margin: 4rem auto; }
-        h2 { font-family: 'JetBrains Mono', monospace; margin-bottom: 2rem; font-size: 1.5rem; border-left: 4px solid var(--accent); padding-left: 1rem; }
-
-        /* Project Grid */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-        .card { 
-            background: var(--card-bg); border-radius: 8px; padding: 1.5rem; 
-            transition: transform 0.2s; border: 1px solid #334155;
+        .stat-box {
+            border-left: 3px solid var(--alert-red);
+            padding-left: 1rem;
+            animation: pulse 2s infinite;
         }
-        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
-        .card h3 { color: var(--accent); margin-bottom: 0.75rem; }
-        .tag { 
-            display: inline-block; background: #334155; color: var(--accent); 
-            padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem; 
-            margin-right: 0.5rem; margin-bottom: 0.5rem; font-family: 'JetBrains Mono';
+        @keyframes pulse { 0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; } }
+
+        .stat-val { font-size: 2rem; font-weight: 700; color: var(--alert-red); display: block; }
+
+        .tech-pill {
+            display: inline-block;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--bat-blue);
+            padding: 4px 12px;
+            font-size: 0.8rem;
+            margin: 5px;
+            border: 1px solid var(--bat-blue);
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
         }
 
-        .metrics { font-weight: bold; color: #10b981; } /* Success Green for metrics */
-
-        footer { text-align: center; color: var(--secondary); margin-top: 6rem; font-size: 0.9rem; }
-        
-        @media (max-width: 600px) {
-            body { padding: 1rem; }
-            h1 { font-size: 1.8rem; }
+        .nav-access {
+            display: flex; justify-content: center; gap: 20px; margin-top: 20px;
         }
+        .nav-access a {
+            color: var(--bat-blue); text-decoration: none; font-family: 'Orbitron';
+            font-size: 0.8rem; border: 1px solid var(--bat-blue); padding: 10px 20px;
+            transition: 0.3s;
+        }
+        .nav-access a:hover { background: var(--bat-blue); color: #000; box-shadow: 0 0 15px var(--bat-blue); }
+
     </style>
 </head>
 <body>
 
+    <div id="canvas-container"></div>
+    <div class="hud-frame"></div>
+
     <header>
-        <h1>Leela Lochan Madisetti</h1>
-        <p class="subtitle">Data Engineer | Specialty: Pipeline Observability & Quality Automation</p>
-        <div class="nav-links">
-            <a href="https://github.com/leeeboy" target="_blank">GitHub</a>
-            <a href="https://linkedin.com/in/leelalochan" target="_blank">LinkedIn</a>
-            <a href="resume.pdf" target="_blank">Resume (PDF)</a>
-            <a href="mailto:leelalochan@gmail.com">Contact</a>
+        <div class="identity" id="name-glitch">LEELA LOCHAN</div>
+        <p style="color: var(--bat-blue); letter-spacing: 5px;">DATA INFRASTRUCTURE // LEVEL 5 CLEARANCE</p>
+        <div class="nav-access">
+            <a href="https://github.com/leeeboy">GIT_HUB</a>
+            <a href="resume.pdf">DOWNLOAD_DOSSIER</a>
         </div>
     </header>
 
-    <section id="about">
-        <h2>System Engineer's Profile</h2>
-        <p>
-            Focused on building high-integrity data systems. Currently optimizing pipelines at <strong>HDSupply</strong> where I've 
-            reduced reporting latency by <span class="metrics">40%</span>. I bridge the gap between Software Engineering (SDET) and 
-            Data Architecture, ensuring that every pipeline I build is observable, testable, and scalable.
-        </p>
-    </section>
-
-    <section id="projects">
-        <h2>Featured Engineering Architectures</h2>
-        <div class="grid">
-            <div class="card">
-                <h3>Insurance ELT Pipeline</h3>
-                <p>End-to-end transformation of 5.2K+ records from MongoDB to Snowflake.</p>
-                <div style="margin: 1rem 0;">
-                    <span class="tag">Airbyte</span> <span class="tag">dbt</span> <span class="tag">Snowflake</span> <span class="tag">Python</span>
+    <div class="container">
+        <section class="module" id="impact">
+            <h2>SYSTEM_IMPACT_REPORT</h2>
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <span class="stat-val">-40%</span>
+                    <span>Reporting Latency [cite: 10]</span>
                 </div>
-                <p>• Applied <span class="metrics">dbt tests</span> to ensure 95% data quality before production.</p>
-            </div>
-
-            <div class="card">
-                <h3>E-commerce Medallion Lakehouse</h3>
-                <p>Orchestrated daily ingestion using Azure Data Factory into a Bronze/Silver/Gold Delta Lake architecture.</p>
-                <div style="margin: 1rem 0;">
-                    <span class="tag">PySpark</span> <span class="tag">Azure Data Factory</span> <span class="tag">Delta Lake</span>
+                <div class="stat-box">
+                    <span class="stat-val">+30%</span>
+                    <span>Data Reliability [cite: 7]</span>
                 </div>
-                <p>• Enabled dynamic forecasting via Gold-layer dimensional modeling.</p>
-            </div>
-
-            <div class="card">
-                <h3>Pipeline Observability Framework</h3>
-                <p>Designed automated validation frameworks to detect schema drift and null anomalies in real-time.</p>
-                <div style="margin: 1rem 0;">
-                    <span class="tag">Splunk</span> <span class="tag">AWS</span> <span class="tag">SQL</span> <span class="tag">Python</span>
+                <div class="stat-box">
+                    <span class="stat-val">95%</span>
+                    <span>Load Integrity [cite: 43]</span>
                 </div>
-                <p>• Improved system reliability by <span class="metrics">30%</span> via custom observability dashboards.</p>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="skills">
-        <h2>Core Stack</h2>
-        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        <section class="module">
+            <h2>TECHNICAL_ARSENAL</h2>
             <div>
-                <h4 style="color: var(--accent); margin-bottom: 0.5rem;">Data / Cloud</h4>
-                <p>Snowflake, dbt, Airbyte, AWS, Azure, MongoDB, Delta Lake</p>
+                <p style="margin-bottom: 10px; color: var(--bat-blue);">LANGUAGES_&_DATA:</p>
+                <span class="tech-pill">Python</span> <span class="tech-pill">SQL</span> <span class="tech-pill">PySpark</span> <span class="tech-pill">Bash</span> [cite: 31, 32]
+            </div>
+            <div style="margin-top: 20px;">
+                <p style="margin-bottom: 10px; color: var(--bat-blue);">CLOUD_INFRA:</p>
+                <span class="tech-pill">AWS (S3, Glue, Redshift)</span> <span class="tech-pill">Azure (ADF, Databricks)</span> 
+            </div>
+        </section>
+
+        <section class="module">
+            <h2>ACTIVE_OPERATIONS</h2>
+            <div style="margin-bottom: 2rem;">
+                <h3 style="color: white;">Insurance ELT Pipeline</h3>
+                <p style="color: #a0a0a0;">Ingested 5.2K+ records using Airbyte & Snowflake[cite: 38]. Applied dbt models for layered data transformation[cite: 39].</p>
             </div>
             <div>
-                <h4 style="color: var(--accent); margin-bottom: 0.5rem;">Languages / Tools</h4>
-                <p>Python, SQL, PySpark, Selenium, Splunk, Power BI</p>
+                <h3 style="color: white;">Medallion Lakehouse</h3>
+                <p style="color: #a0a0a0;">Orchestrated Azure Data Factory pipelines into Bronze/Silver/Gold tiers[cite: 46].</p>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
-    <footer>
-        <p>&copy; 2025 Leela Lochan Madisetti. Built with precision and JetBrains Mono.</p>
-    </footer>
+    <script>
+        // --- THREE.JS 3D BACKGROUND ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
 
+        // Create a Tactical Particle Grid
+        const points = [];
+        for (let i = 0; i < 5000; i++) {
+            points.push(new THREE.Vector3((Math.random() - 0.5) * 20, (Math.random() - 0.5) * 20, (Math.random() - 0.5) * 20));
+        }
+        const geometry = new THREE.BufferGeometry().setFromPoints(points);
+        const material = new THREE.PointsMaterial({ color: 0x00d4ff, size: 0.02 });
+        const stars = new THREE.Points(geometry, material);
+        scene.add(stars);
+
+        camera.position.z = 5;
+
+        function animate3D() {
+            requestAnimationFrame(animate3D);
+            stars.rotation.y += 0.001;
+            stars.rotation.x += 0.0005;
+            renderer.render(scene, camera);
+        }
+        animate3D();
+
+        // React to Mouse
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(stars.rotation, {
+                y: (e.clientX / window.innerWidth) * 0.5,
+                x: (e.clientY / window.innerHeight) * 0.5,
+                duration: 2
+            });
+        });
+
+        // --- GSAP TEXT ANIMATIONS ---
+        gsap.from(".module", {
+            scrollTrigger: ".module",
+            duration: 1,
+            x: -100,
+            opacity: 0,
+            stagger: 0.3,
+            ease: "power4.out"
+        });
+
+        // "Hack" Glitch Effect for Name
+        const name = document.getElementById('name-glitch');
+        const originalText = name.innerText;
+        const chars = "ABCDEFGHIJKLMN0123456789%@$";
+        
+        name.addEventListener('mouseenter', () => {
+            let iterations = 0;
+            const interval = setInterval(() => {
+                name.innerText = name.innerText.split("")
+                    .map((letter, index) => {
+                        if(index < iterations) return originalText[index];
+                        return chars[Math.floor(Math.random() * 26)];
+                    }).join("");
+                if(iterations >= originalText.length) clearInterval(interval);
+                iterations += 1/3;
+            }, 30);
+        });
+    </script>
 </body>
 </html>
