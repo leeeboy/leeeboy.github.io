@@ -147,8 +147,8 @@
                 </p>
                 <div class="impact-grid">
                     <div class="impact-card"><span class="impact-value">🧠 Domains</span><small>Data Engineering, Test Automation, QA, Data Analysis</small></div>
-                    <div class="impact-card"><span class="impact-value">⚙️ Skills</span><small>Python • SQL • AWS • Data pipelines • automation frameworks • testing • analytics • loud workflows</small></div>
-                    <div class="impact-card"><span class="impact-value">📊 YOE</span><small>3+ Years</small></div>
+                    <div class="impact-card"><span class="impact-value">⚙️ Skills</span><small>Python • SQL • AWS • Data pipelines • automation frameworks • testing • analytics • cloud workflows</small></div>
+                    <div class="impact-card"><span class="impact-value">📃 AWS</span><small>Solution Architect - Associate/small></div>
                 </div>
             </div>
         </section>
@@ -189,11 +189,10 @@
 
         <section id="projects">
             <h2>PROJECTS</h2>
-            
-            <a href="https://github.com/leeeboy/insurance-data_elt_pipeline.git"
+            <div class="panel">
+                 <a href="https://github.com/leeeboy/insurance-data_elt_pipeline.git"
                target="_blank"
                style="text-decoration: none; color: inherit;">
-            <div class="panel">
                 <h3 style="color: var(--accent-blue); margin-bottom: 1rem;">Insurance ELT & Analytics Pipeline</h3>
                  <ul class="details">
                     <li>Processed 5.2K+ customer records using Airbyte, Snowflake, and dbt. Built layered data models to enable fraud trend analysis</li>
@@ -208,11 +207,28 @@
                 </div>
             </div>
 
+            <div class="panel">
+                 <a href="https://public.tableau.com/app/profile/leela.lochan.madisetti/viz/NetflixDashboard_17477077457800/Netflix"
+               target="_blank"
+               style="text-decoration: none; color: inherit;">
+                <h3 style="color: var(--accent-blue); margin-bottom: 1rem;">Netflix Interactive Dashboard using Tableu</h3>
+                <li>Cleaned and transformed a dataset of 6,000+ Netflix titles by standardizing date formats, handling missing values, and normalizing categorical fields (e.g., genres, countries) to ensure data quality and consistency</li>
+                <li>Designed and implemented an interactive Tableau dashboard with parameterized filters allowing users to explore title-level metadata (ratings, descriptions, durations, release/listed dates) by type (Movie/TV Show) and title</li>
+                <li>Built six distinct visual components including a dynamic world map of content origins, rating distribution plots, top 10 genres by count, and area plots comparing content trends over time</li>
+                <li>Enabled data-driven insights through interactive elements that automatically refresh visualizations on selection, enhancing user experience and supporting exploratory analysis.</li>
+                <div style="margin-top: 1rem;">
+                    <span class="tag">Tableau</span>
+                    <span class="tag">Data Visualization</span>
+                    <span class="tag">Data Cleaning & Preparation</span>
+                </div>
+            </div>
+
+
               <div class="panel">
                 <h3 style="color: var(--accent-blue); margin-bottom: 1rem;">Change Data Capture Platform</h3>
-                <p>Designed a CDC pipeline using <strong>Debezium, Kafka, PySpark, and Snowflake</strong></p>
-                <p>Enabled near-real-time propagation of transactional changes</p>
-                <p>Implemented schema evolution handling and failure recovery mechanisms</p>
+                <li>Designed a CDC pipeline using <strong>Debezium, Kafka, PySpark, and Snowflake</strong></li>
+                <li>Enabled near-real-time propagation of transactional changes</li>
+                <li>Implemented schema evolution handling and failure recovery mechanisms</li>
                 <div style="margin-top: 1rem;">
                     <span class="tag">Kafka</span>
                     <span class="tag">Snowflake</span>
@@ -223,10 +239,10 @@
 
             <div class="panel">
                 <h3 style="color: var(--accent-blue); margin-bottom: 1rem;">Sales Analytics Engine</h3>
-                <p>Ingested ~30K records into Snowflake, applying dbt tests to prevent 95% of bad data loads prior to production.</p>
-                <p>Built a scalable ETL pipeline using AWS Glue, Apache Spark, and S3, processing over 50K+ retail transactions daily to deliver near real-time analytics for inventory forecasting.</p>
-                <p>ntegrated Kinesis Data Firehose for streaming data ingestion and Athena for ad-hoc querying, reducing batch processing latency by 45%</p>
-                <p>Developed PySpark transformations to cleanse and enrich raw transaction logs, increasing data quality metrics by 30% for downstream machine learning application</p>
+                <li>Ingested ~30K records into Snowflake, applying dbt tests to prevent 95% of bad data loads prior to production.</li>
+                <li>Built a scalable ETL pipeline using AWS Glue, Apache Spark, and S3, processing over 50K+ retail transactions daily to deliver near real-time analytics for inventory forecasting.</li>
+                <li>Integrated Kinesis Data Firehose for streaming data ingestion and Athena for ad-hoc querying, reducing batch processing latency by 45%</li>
+                <li>Developed PySpark transformations to cleanse and enrich raw transaction logs, increasing data quality metrics by 30% for downstream machine learning application</li>
                 <div style="margin-top: 1rem;">
                     <span class="tag">PySpark</span>
                     <span class="tag">Kinesis Data Firehose</span>
@@ -242,7 +258,7 @@
             <div class="panel">
                 <div class="skill-group">
                     <label>Programming & Data</label>
-                    <span class="tag">Python (Pandas, NumPy)</span><span class="tag">SQL</span><span class="tag">PySpark</span><span class="tag">Bash</span> [cite: 31]
+                    <span class="tag">Python (Pandas, NumPy)</span><span class="tag">SQL</span><span class="tag">PySpark</span><span class="tag">Bash</span>
                 </div>
                 <div class="skill-group">
                     <label>Engineering & Pipelines</label>
