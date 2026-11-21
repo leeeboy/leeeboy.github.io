@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12031f">
+  <meta name="description" content="Leela Lochan Madisetti — Python Backend Software Engineer with 3+ years of experience building scalable APIs, distributed systems, and applied AI solutions.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Leela Lochan Madisetti | Retro Portfolio">
+  <meta property="og:description" content="Python • FastAPI • AWS • Distributed Systems • Applied AI">
+  <title>Leela Lochan Madisetti | Retro Tech Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#12031f;
+      --bg2:#090014;
+      --panel:rgba(17,10,38,.78);
+      --panel-2:rgba(22,13,47,.88);
+      --line:rgba(255,255,255,.12);
+      --text:#f8efff;
+      --muted:#cab8dc;
+      --pink:#ff3ebf;
+      --cyan:#3cf8ff;
+      --violet:#a56dff;
+      --yellow:#ffe66d;
+      --green:#71ffa2;
+      --max:1180px;
+      --shadow:0 0 0 1px rgba(255,255,255,.05),0 0 22px rgba(165,109,255,.18),0 0 48px rgba(255,62,191,.14);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:90px}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:'Space Grotesk',sans-serif;
+      line-height:1.65;
+      overflow-x:hidden;
+      background:
+        radial-gradient(circle at 20% 18%, rgba(255,62,191,.22), transparent 22%),
+        radial-gradient(circle at 80% 12%, rgba(60,248,255,.20), transparent 18%),
+        radial-gradient(circle at 50% 70%, rgba(165,109,255,.12), transparent 28%),
+        linear-gradient(180deg, #180228 0%, #0b0418 42%, #090014 100%);
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:-1;
+      background:linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px);
+      background-size:100% 4px;
+      opacity:.16;
+      mix-blend-mode:screen;
+      animation:scan 10s linear infinite;
+    }
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:-1;
+      background:radial-gradient(circle at center, transparent 55%, rgba(0,0,0,.22) 100%);
+    }
+    @keyframes scan { 0% {transform:translateY(0)} 100% {transform:translateY(8px)} }
+
+    .starfield,.starfield::before,.starfield::after{
+      position:fixed;
+      inset:0;
+      content:"";
+      pointer-events:none;
+      z-index:-2;
+      background-repeat:repeat;
+    }
+    .starfield{
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,.85) 0 1px, transparent 1.5px),
+        radial-gradient(circle, rgba(60,248,255,.85) 0 1px, transparent 1.5px),
+        radial-gradient(circle, rgba(255,62,191,.8) 0 1px, transparent 1.5px);
+      background-size:160px 160px, 240px 240px, 320px 320px;
+      background-position:0 0, 40px 90px, 120px 30px;
+      opacity:.38;
+      animation:drift 65s linear infinite;
+    }
+    .starfield::before{
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,.45) 0 1px, transparent 1.5px),
+        radial-gradient(circle, rgba(165,109,255,.8) 0 1px, transparent 1.5px);
+      background-size:210px 210px, 270px 270px;
+      background-position:50px 50px, 140px 100px;
+      opacity:.55;
+      animation:drift 95s linear infinite reverse;
+    }
+    .starfield::after{
+      background-image: radial-gradient(circle, rgba(255,230,109,.85) 0 1px, transparent 1.5px);
+      background-size:360px 360px;
+      background-position:120px 110px;
+      opacity:.35;
+      animation:drift 125s linear infinite;
+    }
+    @keyframes drift{from{transform:translateY(0)}to{transform:translateY(120px)}}
+
+    .sun{
+      position:fixed;
+      top:84px;
+      right:8vw;
+      width:min(30vw,280px);
+      aspect-ratio:1;
+      border-radius:50%;
+      z-index:-2;
+      opacity:.9;
+      background:
+        repeating-linear-gradient(to bottom, rgba(255,255,255,.0) 0 10px, rgba(255,255,255,.12) 10px 12px),
+        linear-gradient(180deg, #fff591 0%, #ff6cc9 52%, #ff3ebf 75%, rgba(255,62,191,.25) 100%);
+      box-shadow:0 0 80px rgba(255,62,191,.32),0 0 120px rgba(255,230,109,.18);
+      filter:saturate(1.15);
+    }
+
+    .grid-floor{
+      position:fixed;
+      left:0; right:0; bottom:-18vh;
+      height:50vh;
+      z-index:-2;
+      pointer-events:none;
+      background:
+        linear-gradient(to top, rgba(3,1,13,.95), rgba(3,1,13,.12)),
+        linear-gradient(rgba(60,248,255,.28) 2px, transparent 2px),
+        linear-gradient(90deg, rgba(60,248,255,.28) 2px, transparent 2px);
+      background-size:100% 100%, 100% 52px, 52px 100%;
+      transform:perspective(600px) rotateX(78deg);
+      transform-origin:bottom;
+      opacity:.62;
+      mask-image:linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,.1));
+    }
+
+    a{color:inherit;text-decoration:none}
+    ::selection{background:var(--cyan);color:#14041f}
+    .wrap{width:min(calc(100% - 34px),var(--max));margin:0 auto;position:relative;z-index:1}
+    .mono{font-family:'JetBrains Mono',monospace}
+    .pixel{font-family:'Press Start 2P',cursive}
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      font:700 .72rem/1 'JetBrains Mono',monospace;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--cyan);
+    }
+    .eyebrow::before{
+      content:"";
+      width:12px;
+      height:12px;
+      border-radius:2px;
+      background:var(--pink);
+      box-shadow:0 0 12px var(--pink);
+      animation:blink 1.6s steps(1) infinite;
+    }
+    @keyframes blink{50%{opacity:.25}}
+
+    .site-nav{
+      position:sticky;
+      top:0;
+      z-index:20;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      background:rgba(10,3,22,.72);
+      backdrop-filter:blur(14px);
+      box-shadow:0 8px 30px rgba(0,0,0,.16);
+    }
+    .nav-inner{
+      min-height:74px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+    .brand{
+      font-family:'Press Start 2P',cursive;
+      font-size:.84rem;
+      line-height:1.7;
+      color:#fff6ff;
+      text-shadow:0 0 8px rgba(255,62,191,.6), 0 0 18px rgba(60,248,255,.35);
+    }
+    .brand span{color:var(--cyan)}
+    .nav-menu{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+    .nav-menu a{
+      font:700 .79rem 'JetBrains Mono',monospace;
+      color:var(--muted);
+      padding:10px 12px;
+      border-radius:999px;
+      transition:transform .2s ease,color .2s ease,background .2s ease;
+    }
+    .nav-menu a:hover{transform:translateY(-2px);color:#fff;background:rgba(255,255,255,.06)}
+    .nav-menu .nav-contact{
+      border:1px solid rgba(60,248,255,.4);
+      background:linear-gradient(90deg, rgba(255,62,191,.18), rgba(60,248,255,.1));
+      color:#fff;
+      box-shadow:0 0 16px rgba(60,248,255,.14);
+    }
+
+    .hero{padding:84px 0 42px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr);gap:40px;align-items:start}
+    .hero-panel,.terminal,.ticker,.card,.metric,.contact,.edu-card{box-shadow:var(--shadow)}
+    .hero-panel{
+      position:relative;
+      overflow:hidden;
+      padding:28px 28px 30px;
+      border:1px solid var(--line);
+      border-radius:24px;
+      background:linear-gradient(145deg, rgba(23,10,46,.92), rgba(10,7,30,.85));
+    }
+    .hero-panel::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:linear-gradient(120deg, rgba(255,255,255,.06), transparent 25%, transparent 75%, rgba(60,248,255,.08));
+    }
+    .status-line{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:18px;
+      border:1px solid rgba(255,230,109,.32);
+      background:rgba(255,230,109,.08);
+      padding:10px 14px;
+      border-radius:999px;
+      font:700 .74rem 'JetBrains Mono',monospace;
+      color:#fff7c4;
+    }
+    .status-line i{
+      width:9px;height:9px;border-radius:50%;display:inline-block;
+      background:var(--yellow);box-shadow:0 0 10px var(--yellow);
+      animation:pulse 1.4s infinite;
+    }
+    @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.65}}
+
+    h1,h2,h3,p{margin-top:0}
+    h1,h2,h3{letter-spacing:-.04em}
+    h1{
+      font-size:clamp(2.7rem,6vw,5.1rem);
+      line-height:1.02;
+      margin:10px 0 18px;
+      text-transform:uppercase;
+      text-shadow:2px 0 var(--pink), -2px 0 rgba(60,248,255,.45), 0 0 24px rgba(255,62,191,.16);
+      animation:titleJitter 5.5s infinite;
+    }
+    @keyframes titleJitter{
+      0%, 94%, 100% {transform:translate(0,0)}
+      95% {transform:translate(1px,-1px)}
+      96% {transform:translate(-1px,1px)}
+      97% {transform:translate(1px,0)}
+      98% {transform:translate(0,0)}
+    }
+    .gradient-name{background:linear-gradient(90deg, #fff, #ffb2ea 30%, #74f6ff 70%, #fff);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero-subtitle{
+      font:700 .85rem/1.7 'JetBrains Mono',monospace;
+      color:var(--cyan);
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      margin-bottom:14px;
+    }
+    .lead{font-size:1.07rem;color:#eadcf6;max-width:670px;margin-bottom:22px}
+    .hero-copy strong{color:#fff8cf}
+    .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:13px 18px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      font-weight:700;
+      font-size:.92rem;
+      transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+    }
+    .btn:hover{transform:translateY(-3px) scale(1.01)}
+    .btn-primary{
+      background:linear-gradient(90deg, rgba(255,62,191,.88), rgba(165,109,255,.82), rgba(60,248,255,.82));
+      color:#13051e;
+      border-color:transparent;
+      box-shadow:0 0 24px rgba(255,62,191,.28);
+    }
+    .btn-secondary{background:rgba(255,255,255,.05)}
+    .btn-secondary:hover{border-color:rgba(60,248,255,.45);box-shadow:0 0 18px rgba(60,248,255,.16)}
+
+    .ticker{
+      margin-top:18px;
+      overflow:hidden;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.04);
+      white-space:nowrap;
+    }
+    .ticker-track{
+      display:inline-block;
+      min-width:100%;
+      padding:12px 0;
+      animation:ticker 24s linear infinite;
+      font:700 .78rem 'JetBrains Mono',monospace;
+      text-transform:uppercase;
+      letter-spacing:.13em;
+      color:#f4e2ff;
+    }
+    .ticker-track span{margin-right:38px}
+    .ticker-track b{color:var(--cyan)}
+    @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+    .terminal{
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(60,248,255,.22);
+      border-radius:22px;
+      background:linear-gradient(160deg, rgba(8,16,31,.92), rgba(10,5,25,.96));
+      transform:rotate(1.4deg);
+    }
+    .terminal::after{
+      content:"";
+      position:absolute;inset:0;pointer-events:none;
+      background:linear-gradient(transparent, rgba(255,255,255,.02) 50%, transparent 51%);
+      background-size:100% 4px;
+      opacity:.28;
+    }
+    .terminal-top{display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .dot{width:11px;height:11px;border-radius:50%;background:#ff4da7;box-shadow:0 0 10px currentColor}
+    .dot:nth-child(2){background:#ffe66d}
+    .dot:nth-child(3){background:#71ffa2}
+    .term-label{margin-left:auto;font:700 .68rem 'JetBrains Mono',monospace;color:#99e8ff;letter-spacing:.16em;text-transform:uppercase}
+    .term-body{padding:22px 22px 26px;font:500 .83rem/1.95 'JetBrains Mono',monospace;color:#d7fff4}
+    .term-line{display:block;white-space:normal;overflow-wrap:anywhere}
+    .term-key{color:var(--pink)}
+    .term-value{color:#f4f5ff}
+    .term-green{color:var(--green)}
+    .term-cyan{color:var(--cyan)}
+    .term-violet{color:#d0b3ff}
+    .typing::after{content:"_";margin-left:2px;color:var(--yellow);animation:caret 1s steps(1) infinite}
+    @keyframes caret{50%{opacity:0}}
+
+    main{padding-bottom:38px}
+    section{padding:34px 0}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:22px}
+    .section-head p{max-width:560px;color:var(--muted);margin:0}
+    .section-title{font-size:clamp(1.5rem,3vw,2.4rem);margin:10px 0 0}
+
+    .metrics{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      margin-top:18px;
+    }
+    .metric{
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      background:linear-gradient(145deg, rgba(28,12,58,.86), rgba(16,8,36,.84));
+      padding:20px 18px;
+      transition:transform .2s ease,border-color .2s ease;
+    }
+    .metric:hover{transform:translateY(-5px);border-color:rgba(60,248,255,.32)}
+    .metric strong{display:block;font-size:clamp(1.55rem,2.8vw,2.2rem);line-height:1.1;color:var(--cyan)}
+    .metric span{display:block;font-size:.82rem;color:var(--muted);margin-top:7px}
+    .metric::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg, var(--pink), var(--cyan), var(--yellow))}
+
+    .stack{display:grid;gap:16px}
+    .card{
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.09);
+      border-radius:20px;
+      background:linear-gradient(145deg, rgba(22,11,45,.9), rgba(11,6,26,.9));
+      padding:26px;
+      transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+    }
+    .card:hover{transform:translateY(-4px);border-color:rgba(255,62,191,.34);box-shadow:0 0 0 1px rgba(255,255,255,.05),0 0 24px rgba(60,248,255,.13),0 0 54px rgba(255,62,191,.14)}
+    .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg, var(--pink), var(--violet), var(--cyan))}
+    .card-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:16px}
+    .org{font:700 .82rem 'JetBrains Mono',monospace;color:var(--cyan);letter-spacing:.08em;text-transform:uppercase}
+    .role-title{font-size:1.35rem;line-height:1.2;margin:6px 0 0}
+    .role-title small{font-size:.62em;color:var(--muted);font-weight:500}
+    .meta{font:700 .75rem/1.75 'JetBrains Mono',monospace;color:#f9d3f0;text-align:right;white-space:nowrap}
+
+    .bullets{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+    .bullets li{position:relative;padding-left:22px;color:#efe5f6;font-size:.95rem}
+    .bullets li::before{content:"▶";position:absolute;left:0;top:0;color:var(--yellow);font-size:.9rem}
+
+    .tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+    .tag{
+      display:inline-flex;align-items:center;
+      min-height:30px;
+      padding:6px 10px;
+      border:1px solid rgba(255,255,255,.09);
+      border-radius:999px;
+      font:700 .72rem 'JetBrains Mono',monospace;
+      color:#e8f5ff;
+      background:rgba(255,255,255,.045);
+    }
+
+    .projects-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .project-icon{
+      width:48px;height:48px;border-radius:14px;
+      display:grid;place-items:center;
+      margin-bottom:16px;
+      border:1px solid rgba(255,255,255,.1);
+      background:linear-gradient(135deg, rgba(255,62,191,.18), rgba(60,248,255,.12));
+      font-size:1.35rem;
+      box-shadow:0 0 20px rgba(255,62,191,.12);
+    }
+    .project-card h3{font-size:1.35rem;margin-bottom:12px}
+
+    .skills-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .skill-card h3{font-size:1rem;margin-bottom:12px;color:var(--cyan)}
+    .skill-card p{margin:0;color:#eee2fa;font-size:.9rem;line-height:1.85}
+
+    .edu-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+    .edu-card{
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:20px;
+      padding:24px;
+      background:linear-gradient(145deg, rgba(25,12,49,.88), rgba(10,7,28,.9));
+    }
+    .edu-card .eyebrow{margin-bottom:10px}
+    .edu-card h3{font-size:1.22rem;margin-bottom:8px}
+    .edu-card p{margin:0;color:var(--muted)}
+    .highlight{color:#fff;font-weight:700}
+
+    .contact{
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:24px;
+      margin-top:8px;
+      padding:28px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+      background:linear-gradient(125deg, rgba(255,62,191,.14), rgba(165,109,255,.14), rgba(60,248,255,.14));
+    }
+    .contact::before{
+      content:"";
+      position:absolute;inset:0;pointer-events:none;
+      background:linear-gradient(120deg, transparent 10%, rgba(255,255,255,.07) 40%, transparent 60%);
+      transform:translateX(-100%);
+      animation:shine 7s linear infinite;
+    }
+    @keyframes shine{to{transform:translateX(100%)}}
+    .contact h2{font-size:clamp(1.5rem,3vw,2.2rem);margin:6px 0 8px}
+    .contact p{margin:0;color:#f3def5}
+    .contact-links{display:flex;gap:10px;flex-wrap:wrap}
+
+    footer{
+      padding:28px 0 44px;
+      color:#c4b8d7;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    .footer-content{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font:700 .74rem 'JetBrains Mono',monospace}
+    footer a:hover{color:var(--cyan)}
+
+    .reveal{opacity:1;transform:none}
+    @media (prefers-reduced-motion:no-preference){
+      .js .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+      .js .reveal.visible{opacity:1;transform:none}
+      .floaty{animation:floaty 5.2s ease-in-out infinite}
+      @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    }
+
+    :focus-visible{outline:2px solid var(--cyan);outline-offset:4px}
+
+    @media (max-width:960px){
+      .hero{grid-template-columns:1fr;gap:24px}
+      .terminal{transform:none}
+      .sun{width:min(48vw,240px);right:2vw;top:94px}
+      .metrics{grid-template-columns:repeat(2,1fr)}
+      .projects-grid,.skills-grid,.edu-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:720px){
+      .wrap{width:min(calc(100% - 24px),var(--max))}
+      .nav-menu a:not(.nav-contact){display:none}
+      .nav-inner{min-height:68px}
+      .brand{font-size:.72rem}
+      .hero{padding-top:62px}
+      .hero-panel,.card,.edu-card,.contact{padding:22px}
+      .card-head,.section-head,.contact{display:block}
+      .meta{text-align:left;margin-top:8px}
+      .metrics{grid-template-columns:1fr 1fr;gap:10px}
+      .contact-links{margin-top:18px}
+      .footer-content{justify-content:center;text-align:center}
+      h1{font-size:clamp(2.3rem,13vw,3.7rem)}
+      .section-head p{margin-top:10px}
+    }
+    @media (max-width:520px){
+      .metrics{grid-template-columns:1fr}
+      .status-line{font-size:.68rem}
+      .lead{font-size:.98rem}
+      .hero-subtitle{font-size:.76rem}
+    }
+  </style>
+</head>
+<body>
+  <div class="starfield" aria-hidden="true"></div>
+  <div class="sun" aria-hidden="true"></div>
+  <div class="grid-floor" aria-hidden="true"></div>
+
+  <nav class="site-nav" aria-label="Primary navigation">
+    <div class="wrap nav-inner">
+      <a href="#top" class="brand">LEELA<span>.DEV</span></a>
+      <div class="nav-menu">
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#education">Education</a>
+        <a href="#contact" class="nav-contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="wrap hero" id="top">
+    <section class="hero-panel reveal">
+      <div class="status-line"><i></i> Recruiter mode: portfolio online</div>
+      <div class="eyebrow">Backend Engineer • AWS • Applied AI</div>
+      <h1><span class="gradient-name">Leela Lochan<br>Madisetti</span></h1>
+      <div class="hero-subtitle typing">Python Backend Software Engineer // Atlanta, GA</div>
+      <p class="lead hero-copy">Python backend software engineer with <strong>3+ years of experience</strong> designing and maintaining scalable backend applications across <strong>supply chain, e-commerce, and enterprise operations</strong>. Strong in <strong>FastAPI, Django, SQLAlchemy, PostgreSQL, REST APIs, microservices, AWS, Docker, Kubernetes, and CI/CD</strong>, with additional experience in <strong>AWS SageMaker, Retrieval-Augmented Generation (RAG), and LLM integration</strong>.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="mailto:leelalochanm@gmail.com">Email Me ↗</a>
+        <a class="btn btn-secondary" href="https://github.com/leeeboy" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        <a class="btn btn-secondary" href="https://www.linkedin.com/in/leelalochan" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </div>
+      <div class="ticker" aria-label="Highlights">
+        <div class="ticker-track">
+          <span><b>300K+</b> daily API requests</span>
+          <span><b>~30%</b> lower query latency</span>
+          <span><b>~25%</b> faster troubleshooting</span>
+          <span><b>55% → 75%</b> automated test coverage</span>
+          <span><b>FastAPI</b> • <b>AWS</b> • <b>Kafka</b> • <b>RAG</b></span>
+          <span><b>300K+</b> daily API requests</span>
+          <span><b>~30%</b> lower query latency</span>
+          <span><b>~25%</b> faster troubleshooting</span>
+          <span><b>55% → 75%</b> automated test coverage</span>
+          <span><b>FastAPI</b> • <b>AWS</b> • <b>Kafka</b> • <b>RAG</b></span>
+        </div>
+      </div>
+    </section>
+
+    <aside class="terminal reveal floaty" aria-label="Resume highlights terminal">
+      <div class="terminal-top">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="term-label">retro-console.exe</span>
+      </div>
+      <div class="term-body">
+        <span class="term-line"><span class="term-key">name:</span> <span class="term-value">Leela Lochan Madisetti</span></span>
+        <span class="term-line"><span class="term-key">email:</span> <span class="term-value">leelalochanm@gmail.com</span></span>
+        <span class="term-line"><span class="term-key">site:</span> <span class="term-cyan">https://leeeboy.github.io/</span></span>
+        <span class="term-line"><span class="term-key">core_stack:</span> <span class="term-violet">Python, FastAPI, Django, PostgreSQL, AWS</span></span>
+        <span class="term-line"><span class="term-key">systems:</span> <span class="term-value">REST APIs, Microservices, Distributed Services</span></span>
+        <span class="term-line"><span class="term-key">ops:</span> <span class="term-value">Docker, Kubernetes, Jenkins CI/CD, Splunk</span></span>
+        <span class="term-line"><span class="term-key">ai:</span> <span class="term-value">AWS SageMaker, RAG, LLM Integration</span></span>
+        <span class="term-line"><span class="term-key">education:</span> <span class="term-value">Master of Computer Science, Illinois Institute of Technology</span></span>
+        <span class="term-line"><span class="term-key">certification:</span> <span class="term-green">AWS Certified Solutions Architect – Associate</span></span>
+      </div>
+    </aside>
+  </header>
+
+  <main class="wrap">
+    <section id="highlights">
+      <div class="section-head reveal">
+        <div>
+          <div class="eyebrow">Impact Stats</div>
+          <h2 class="section-title">Measured engineering impact</h2>
+        </div>
+        <p>Quick proof points pulled directly from the resume, presented first so a recruiter sees scale, performance, and delivery at a glance.</p>
+      </div>
+      <div class="metrics">
+        <article class="metric reveal"><strong>300K+</strong><span>Daily API requests supported across e-commerce and supply-chain operations.</span></article>
+        <article class="metric reveal"><strong>~30%</strong><span>Average query-latency reduction through PostgreSQL optimization.</span></article>
+        <article class="metric reveal"><strong>~25%</strong><span>Production troubleshooting time reduced with tracing, logging, and Splunk monitoring.</span></article>
+        <article class="metric reveal"><strong>55 → 75%</strong><span>Automated test coverage improvement with pytest-based unit and integration tests.</span></article>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="section-head reveal">
+        <div>
+          <div class="eyebrow">Level 01</div>
+          <h2 class="section-title">Professional experience</h2>
+        </div>
+        <p>Backend, integration, and operational engineering experience across supply chain and enterprise systems.</p>
+      </div>
+
+      <div class="stack">
+        <article class="card reveal">
+          <div class="card-head">
+            <div>
+              <div class="org">HD Supply · Atlanta, GA</div>
+              <h3 class="role-title">Business Systems Analyst <small>(Software Development Engineer)</small></h3>
+            </div>
+            <div class="meta">Sept 2025 – Present</div>
+          </div>
+          <ul class="bullets">
+            <li>Engineer and maintain scalable Python/FastAPI microservices using async/await, Pydantic, SQLAlchemy, and PostgreSQL, supporting over 300K daily API requests across e-commerce and supply-chain operations.</li>
+            <li>Design versioned REST APIs with OAuth2/JWT authentication, role-based authorization, and OpenAPI documentation, enabling secure integration across order-management, SAP, and transportation systems.</li>
+            <li>Optimize PostgreSQL queries, indexes, connection pooling, and database transaction handling, reducing average query latency by approximately 30% across order and shipment services.</li>
+            <li>Implement Redis caching for frequently accessed order and reference data, reducing redundant database reads by approximately 25% during peak application traffic.</li>
+            <li>Develop asynchronous task-processing workflows using Celery, Redis, and Amazon SQS, isolating long-running integrations from synchronous requests and reducing user-facing latency by approximately 20%.</li>
+            <li>Architect event-driven backend services using Apache Kafka to process approximately 100K–150K daily shipment and order events, improving service decoupling and downstream processing reliability.</li>
+            <li>Integrate UPS and FedEx REST APIs for real-time carrier rates and shipment tendering, enabling automated carrier comparisons and reducing transportation costs by approximately 5–7% on dynamically tendered shipments.</li>
+            <li>Design resilient API integrations with retry policies, idempotent request handling, and structured error recovery to improve order-processing reliability across distributed services.</li>
+            <li>Containerize Python services using Docker and deploy workloads through Amazon ECS and Kubernetes environments, improving consistency across development, staging, and production releases.</li>
+            <li>Automate backend build, testing, and deployment workflows through Jenkins CI/CD pipelines, reducing average deployment time from approximately 25 minutes to 12 minutes.</li>
+            <li>Develop pytest-based unit and integration tests with mocked external dependencies, expanding automated test coverage from approximately 55% to 75% and reducing release regressions.</li>
+            <li>Implement distributed tracing, centralized logging, and Splunk monitoring across backend services, reducing production troubleshooting time by approximately 25%.</li>
+          </ul>
+          <div class="tag-row">
+            <span class="tag">Python</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">Redis</span>
+            <span class="tag">Kafka</span>
+            <span class="tag">AWS</span>
+            <span class="tag">Docker</span>
+            <span class="tag">Kubernetes</span>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <div class="card-head">
+            <div>
+              <div class="org">British Telecom · Chennai, India</div>
+              <h3 class="role-title">Software Development Engineer</h3>
+            </div>
+            <div class="meta">Jun 2021 – Aug 2023</div>
+          </div>
+          <ul class="bullets">
+            <li>Developed Python backend applications using FastAPI, Django, SQLAlchemy, and PostgreSQL to support enterprise procurement, inventory, supplier-management, and order-processing workflows.</li>
+            <li>Designed and integrated REST APIs with Pydantic validation and OpenAPI documentation, reducing manual reconciliation by approximately 20% across procurement and vendor-management systems.</li>
+            <li>Implemented OAuth2/JWT authentication and role-based access controls for internal business applications, protecting procurement and inventory operations.</li>
+            <li>Built asynchronous Python processing workflows using asyncio, Celery, and Redis for batch reconciliation, notifications, and supplier-data synchronization.</li>
+            <li>Optimized PostgreSQL queries, indexing strategies, and database connection management, improving API response and application page-load performance by approximately 25%.</li>
+            <li>Implemented transaction management and database schema migrations to support consistent purchase-order updates and controlled application releases.</li>
+            <li>Designed JavaScript, HTML, and CSS interfaces integrated with Python REST APIs, improving access to purchase-order tracking, supplier status, and inventory information.</li>
+            <li>Integrated upstream supplier, inventory, and logistics systems through Python APIs and scheduled data-processing workflows to improve cross-system data availability.</li>
+            <li>Developed supply-chain forecasting workflows using Python and AWS SageMaker, improving forecast accuracy by approximately 8–10% against the existing baseline.</li>
+            <li>Deployed containerized Python applications to AWS infrastructure, using Amazon RDS for managed database workloads and Amazon S3 for application data storage.</li>
+            <li>Developed automated unit and integration tests using pytest, unittest, and mocked dependencies to strengthen backend release quality and regression detection.</li>
+            <li>Automated application deployments through Jenkins CI/CD pipelines and implemented centralized logging to reduce manual release effort and improve operational troubleshooting.</li>
+          </ul>
+          <div class="tag-row">
+            <span class="tag">Django</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">Celery</span>
+            <span class="tag">AWS SageMaker</span>
+            <span class="tag">Amazon RDS</span>
+            <span class="tag">Jenkins</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="section-head reveal">
+        <div>
+          <div class="eyebrow">Level 02</div>
+          <h2 class="section-title">Featured projects</h2>
+        </div>
+        <p>Selected projects from the resume that show applied AI, backend design, API integration, and production-style engineering.</p>
+      </div>
+
+      <div class="projects-grid">
+        <article class="card project-card reveal">
+          <div class="project-icon" aria-hidden="true">✦</div>
+          <h3>Supply Chain Operations RAG Copilot</h3>
+          <ul class="bullets">
+            <li>Built a Retrieval-Augmented Generation (RAG) assistant using Python and LLM integration to answer operational queries across shipment procedures, carrier documentation, SAP process guides, and fulfillment policies.</li>
+            <li>Developed document ingestion and retrieval pipelines to chunk operational content, generate embeddings, and retrieve relevant context, improving grounding for domain-specific responses.</li>
+            <li>Exposed RAG capabilities through FastAPI REST endpoints with source citations, access controls, structured response validation, and fallback handling to support integration with enterprise operations applications.</li>
+          </ul>
+          <div class="tag-row">
+            <span class="tag">Python</span>
+            <span class="tag">RAG</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">LLM Integration</span>
+          </div>
+        </article>
+
+        <article class="card project-card reveal">
+          <div class="project-icon" aria-hidden="true">◈</div>
+          <h3>AI-Powered Carrier Selection &amp; Spot Tendering Platform</h3>
+          <ul class="bullets">
+            <li>Built a Python-based carrier recommendation service using AWS SageMaker to rank shipping options based on freight costs, historical delivery performance, service levels, destinations, and shipment characteristics.</li>
+            <li>Integrated UPS and FedEx rate APIs through FastAPI REST endpoints, enabling real-time carrier cost comparisons and predicted delivery-performance evaluation before spot tendering.</li>
+            <li>Developed PostgreSQL feature pipelines and Redis caching for frequently accessed carrier data, exposing model predictions through backend APIs for integration with order-management and supply-chain workflows.</li>
+          </ul>
+          <div class="tag-row">
+            <span class="tag">AWS SageMaker</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">Redis</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="section-head reveal">
+        <div>
+          <div class="eyebrow">Level 03</div>
+          <h2 class="section-title">Technical skills</h2>
+        </div>
+        <p>The skills below mirror the categories and technologies from the resume, grouped so recruiters can scan quickly.</p>
+      </div>
+
+      <div class="skills-grid">
+        <article class="card skill-card reveal"><h3>Programming Languages</h3><p>Python · SQL · Java · Go · C++ · JavaScript · Bash</p></article>
+        <article class="card skill-card reveal"><h3>Backend &amp; API Development</h3><p>FastAPI · Django · Flask · SQLAlchemy · Pydantic · Python asyncio/async-await · REST APIs · OAuth2 · JWT · API Versioning · OpenAPI/Swagger · Microservices · System Design · Software Architecture · gRPC · GraphQL · Celery · Node.js</p></article>
+        <article class="card skill-card reveal"><h3>Databases &amp; Caching</h3><p>PostgreSQL · Redis · MySQL · Oracle · MongoDB · Cassandra · Database Migrations · Database Transactions · Connection Pooling</p></article>
+        <article class="card skill-card reveal"><h3>Cloud &amp; Infrastructure</h3><p>AWS · Amazon RDS · Amazon S3 · Amazon SQS · Amazon ECS · Amazon EKS · AWS Lambda · Amazon EC2 · AWS SageMaker · Amazon Redshift · Terraform · Microsoft Azure · GCP</p></article>
+        <article class="card skill-card reveal"><h3>DevOps &amp; CI/CD</h3><p>Docker · Kubernetes · Jenkins · GitHub Actions · Git · CI/CD · pytest · unittest · Automated Testing</p></article>
+        <article class="card skill-card reveal"><h3>Data Engineering</h3><p>Apache Kafka · ETL/ELT · Apache Airflow · Apache Spark · Databricks · Snowflake</p></article>
+        <article class="card skill-card reveal"><h3>Observability &amp; Monitoring</h3><p>Distributed Tracing · Splunk · Application Logging · Production Monitoring · Alerting</p></article>
+        <article class="card skill-card reveal"><h3>AI &amp; Generative AI</h3><p>Generative AI · LLM Integration · Retrieval-Augmented Generation (RAG) · LangChain · LangGraph · OpenAI API · Amazon Bedrock · Prompt Engineering · Agentic AI · Model Context Protocol (MCP)</p></article>
+      </div>
+    </section>
+
+    <section id="education">
+      <div class="section-head reveal">
+        <div>
+          <div class="eyebrow">Level 04</div>
+          <h2 class="section-title">Education &amp; certification</h2>
+        </div>
+        <p>Formal education and certification details pulled directly from the resume.</p>
+      </div>
+
+      <div class="edu-grid">
+        <article class="edu-card reveal">
+          <div class="eyebrow">Education</div>
+          <h3>Master of Computer Science</h3>
+          <p><span class="highlight">Illinois Institute of Technology</span><br>Chicago, IL, USA<br>May 2025</p>
+        </article>
+        <article class="edu-card reveal">
+          <div class="eyebrow">Certification</div>
+          <h3>Certified Solutions Architect – Associate</h3>
+          <p><span class="highlight">Amazon Web Services</span><br>April 2025</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="contact reveal">
+        <div>
+          <div class="eyebrow">Insert coin to connect</div>
+          <h2>Want to talk backend systems, cloud architecture, or applied AI?</h2>
+          <p>I’m open to conversations with recruiters and hiring teams looking for strong engineering fundamentals plus modern platform and AI exposure.</p>
+        </div>
+        <div class="contact-links">
+          <a class="btn btn-primary" href="mailto:leelalochanm@gmail.com">Email ↗</a>
+          <a class="btn btn-secondary" href="https://www.linkedin.com/in/leelalochan" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+          <a class="btn btn-secondary" href="https://github.com/leeeboy" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-content">
+      <span>© <span id="year">2026</span> Leela Lochan Madisetti · Atlanta, GA</span>
+      <span><a href="mailto:leelalochanm@gmail.com">leelalochanm@gmail.com</a> · <a href="https://leeeboy.github.io/" target="_blank" rel="noopener noreferrer">Portfolio</a> · <a href="https://github.com/leeeboy" target="_blank" rel="noopener noreferrer">GitHub</a></span>
+    </div>
+  </footer>
+
+  <script>
+    document.documentElement.classList.add('js');
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const revealItems = document.querySelectorAll('.reveal');
+
+    if ('IntersectionObserver' in window && !prefersReduced) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+      revealItems.forEach(item => observer.observe(item));
+    } else {
+      revealItems.forEach(item => item.classList.add('visible'));
+    }
+
+    if (!prefersReduced) {
+      document.addEventListener('mousemove', (event) => {
+        const x = (event.clientX / window.innerWidth - 0.5) * 8;
+        const y = (event.clientY / window.innerHeight - 0.5) * 8;
+        const sun = document.querySelector('.sun');
+        const heroPanel = document.querySelector('.hero-panel');
+        const terminal = document.querySelector('.terminal');
+        if (sun) sun.style.transform = `translate(${x * 0.8}px, ${y * -0.6}px)`;
+        if (heroPanel) heroPanel.style.transform = `translate(${x * -0.15}px, ${y * -0.12}px)`;
+        if (terminal) terminal.style.transform = `rotate(1.4deg) translate(${x * 0.12}px, ${y * 0.08}px)`;
+      });
+    }
+  </script>
+</body>
+</html>
